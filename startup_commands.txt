@@ -1,0 +1,23 @@
+# Startup Commands Reference for Azure App Services
+
+## Option 1: Using Flask development server (NOT recommended for production)
+gunicorn --workers 1 --timeout 600 --access-logfile - --error-logfile - --bind=0.0.0.0:8000 app:app
+
+## Option 2: Using Gunicorn with multiple workers (RECOMMENDED)
+gunicorn --workers 4 --worker-class sync --timeout 600 --access-logfile - --error-logfile - --bind=0.0.0.0:8000 app:app
+
+## Option 3: Direct Python Flask
+python -m flask run --host=0.0.0.0 --port=8000
+
+## To set startup command in Azure Portal:
+1. Go to your App Service in Azure Portal
+2. Settings → Configuration
+3. General settings → Startup Command
+4. Paste one of the commands above
+5. Save
+
+## Notes:
+- Azure automatically assigns PORT via environment variable
+- The web.config file in this folder is used on Windows App Services
+- Linux App Services use the startup command directly
+- Gunicorn is recommended for production deployments
